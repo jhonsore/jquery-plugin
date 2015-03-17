@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Plugin</title>
+<script type="text/javascript" src="jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="jquery-plugin.js"></script>
+<script type="text/javascript">
+	jQuery(document).ready(
+	function()
+	{
+		//-----------------------------------------
+		$("#slider").boilerplate({activate: activate, property01:"jhonnatan"});
+		
+		var data = new Object;
+		data.value = "valor a ser passado para o plugin";
+		data.value2 = "segundo valor a ser passado";
+		$("#slider").boilerplate("callMethod",data);
+		
+		$("#button").click(function(){
+			$("#slider").boilerplate("destroy",data);
+		});
+				
+		function activate (event){
+			console.log("val 1 : "+event.val);
+			console.log("val 2 : "+event.val2);
+		}
+		
+		function destroy (event){
+			console.log("destroy: "+event.val);
+		}
+		
+		//-----------------------------------------
+	});
+
+</script>
+<style type="text/css">
+#slider{ width:400px; height:300px; background-color:#999;}
+#button{ margin-bottom:20px; display:block;}
+</style>
+</head>
+
+<body>
+	<a href="#" id="button">Click me</a>
+	<div id="slider">
+    	
+    </div>
+</body>
+</html>
