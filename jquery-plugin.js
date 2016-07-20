@@ -1,73 +1,65 @@
-(function($){
-		
-	//
-	$.fn.boilerplate = function( method )
-	{
-		var methods =
-		{
-			init :										function( options ){ 			return this.each(function(){	_init(this, options);});},
-			callMethod :								function( options ){ 			return this.each(function(){	_callMethod(this,options);});},
-			destroy :									function( options ){ 			return this.each(function(){	_destroy(this,options);});}
-		};
-		
-		//----------------------------------------------------------------------
-		//----------------------------------------------------------------------
-		var defaults =
-		{
-			property01					: '',
-			property02					: false,
-			method						: function() {}
-		};
-		
-		var boilerplate_settings;
-		var boilerplate_element;
-		
-		//----------------------------------------------------------------------
-		//----------------------------------------------------------------------
+// plugin template by https://jqueryboilerplate.com/
+;(function ($, window, document, undefined) {
 
-		// Method calling logic
-		if ( methods[method] )//caso exista um método, esse método é chamado
-		{
-			return methods[ method ].apply( this, Array.prototype.slice.call( arguments, 1 ));
+	"use strict";
+
+	var pluginName = "plugin",
+		dataKey = "plugin_" + pluginName;
+
+	var Plugin = function (element, options) {
+
+		this.element = $(element);
+		this.count = 1;
+
+		this.options = {
+			val1                            : "some value",
+			activate						: function() {}
+		};
+
+		this.init(options);
+
+	};
+
+	Plugin.prototype = {
+		init: function (options) {
+
+			this.element.html(this.count);
+
+		},
+		increase: function () {
+			this.count = this.count+1;
+			this.element.html(this.count);
+		},
+		decrease: function () {
+			this.count = this.count-1;
+			this.element.html(this.count);
+		},
+		destroy: function () {
+			this.element.unbind().removeData();
+			$('*',this.element).unbind().removeData();
+			this.element.html("I'm dead");
+			this.count = 0;
 		}
-		else if ( typeof method === 'object' || ! method )//caso não exista um método ou seja apenas passado o objeto
-		{
-			return methods.init.apply( this, arguments );
+	};
+
+	//----------------------------------------------------
+	//----------------------------------------------------
+	//----------------------------------------------------
+	//----------------------------------------------------
+	$.fn[pluginName] = function (options) {
+
+		var plugin = this.data(dataKey);
+
+		if (plugin instanceof Plugin) {
+			if (typeof options !== 'undefined') {
+				plugin.init(options);
+			}
+		} else {
+			plugin = new Plugin(this, options);
+			this.data(dataKey, plugin);
 		}
-		else//caso o método não exista
-		{
-		  $.error( 'Method ' +  method + ' does not exist on jQuery.boilerplate' );
-		}
-		
-		function _init($this, options)
-		{
-			boilerplate_element 						= $($this);
-			boilerplate_settings 						= $.extend(defaults, options);				
-			initialize($this);
-			_activate();
-		}
-		
-		function initialize($this)
-		{
-			console.log('plugin inicializado com propriedade : '+boilerplate_settings.property01);		
-			
-		}
-		
-		function _activate () {
-			console.log("activate is returning values");
-			boilerplate_settings.activate.call(this, {val:"este é o valor a ser devolvido", val2:"Valor 2"});
-		}
-		
-		function _callMethod ( $obj, $property ) {
-			console.log("item : "+$obj);
-			console.log("dados : "+$property.value+" / "+$property.value2);
-		}
-		
-		function _destroy ( $obj, $property ) {
-			$($obj).css({backgroundColor:"#000000"});
-			console.log("destroy : "+$property.value+" / "+$property.value2);
-		}
-		
-    
-	};//-------------------------------
-})(jQuery);
+
+		return plugin;
+	};
+
+}(jQuery, window, document));

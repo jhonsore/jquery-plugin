@@ -10,40 +10,55 @@
 	function()
 	{
 		//-----------------------------------------
-		$("#slider").boilerplate({activate: activate, property01:"jhonnatan"});
-		
-		var data = new Object;
-		data.value = "valor a ser passado para o plugin";
-		data.value2 = "segundo valor a ser passado";
-		$("#slider").boilerplate("callMethod",data);
-		
-		$("#button").click(function(){
-			$("#slider").boilerplate("destroy",data);
+		var t = $("#js-plugin").plugin();
+
+		$("#button-1").click(function(){
+			t.increase();
 		});
-				
-		function activate (event){
-			console.log("val 1 : "+event.val);
-			console.log("val 2 : "+event.val2);
-		}
-		
-		function destroy (event){
-			console.log("destroy: "+event.val);
-		}
-		
+
+		$("#button-2").click(function(){
+			t.decrease();
+		});
+
+		//----------
+		var t2 = $("#js-plugin-2").plugin();
+		$("#button-3").click(function(){
+			t2.increase();
+			console.log(t2.count);
+		});
+		$("#button-4").click(function(){
+			t2.decrease();
+		});
+		$("#button-5").click(function(){
+			t2.destroy();
+		});
 		//-----------------------------------------
 	});
 
 </script>
 <style type="text/css">
-#slider{ width:400px; height:300px; background-color:#999;}
-#button{ margin-bottom:20px; display:block;}
+	.wrapper{
+		width: 400px;
+		height: 100px;
+		background: #c1c1c1;
+		padding: 10px;
+	}
+
+	button{
+		padding: 5px 10px;
+		display: inline-block;
+		margin: 10px;
+	}
 </style>
 </head>
 
 <body>
-	<a href="#" id="button">Click me</a>
-	<div id="slider">
-    	
-    </div>
+	<div class="wrapper" id="js-plugin"></div>
+	<button id="button-1">+</button><button id="button-2">-</button>
+
+	<br><br><br><br>
+
+	<div class="wrapper" id="js-plugin-2"></div>
+	<button id="button-3">+</button><button id="button-4">-</button><button id="button-5">destroy plugin</button>
 </body>
 </html>
